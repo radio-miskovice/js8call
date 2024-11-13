@@ -253,11 +253,12 @@ if (WIN32)
     ${wsjt_CXXSRCS}
     killbyname.cpp
     )
-
+  if(NOT SKIP_OMNIRIG) 
   set (wsjt_qt_CXXSRCS
     ${wsjt_qt_CXXSRCS}
     OmniRigTransceiver.cpp
     )
+  endif(NOT SKIP_OMNIRIG)
 endif (WIN32)
 
 set (wsjt_FSRCS
@@ -441,7 +442,7 @@ endif (WSJT_QDEBUG_IN_RELEASE)
 set_property (SOURCE ${all_C_and_CXXSRCS} APPEND_STRING PROPERTY COMPILE_FLAGS " -include wsjtx_config.h")
 set_property (SOURCE ${all_C_and_CXXSRCS} APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wsjtx_config.h)
 
-if (WIN32)
+if (WIN32 AND NOT SKIP_OMNIRIG)
   # generate the OmniRig COM interface source
   find_program (DUMPCPP dumpcpp)
   if (DUMPCPP-NOTFOUND)
@@ -458,7 +459,7 @@ if (WIN32)
   endif (NOT AXSERVER)
   string (REPLACE "\"" "" AXSERVER ${AXSERVER})
   file (TO_CMAKE_PATH ${AXSERVER} AXSERVERSRCS)
-endif (WIN32)
+endif (WIN32 AND NOT SKIP_OMNIRIG)
 
 
 #
@@ -522,10 +523,10 @@ message (STATUS "Hamlib_LIBRARIES: ${Hamlib_LIBRARIES}")
 #
 find_package(Qt6 6.4 REQUIRED COMPONENTS Widgets Multimedia SerialPort)
 
-if (WIN32)
+if (WIN32 AND NOT SKIP_OMNIRIG)
   add_definitions (-DQT_NEEDS_QTMAIN)
   find_package (Qt6 REQUIRED COMPONENTS AxContainer AxServer)
-endif (WIN32)
+endif (WIN32 AND NOT SKIP_OMNIRIG)
 
 
 #
@@ -749,10 +750,10 @@ qt6_wrap_ui (wsjtx_GENUISRCS ${wsjtx_UISRCS})
 qt6_add_resources (wsjtx_RESOURCES_RCC ${CMAKE_BINARY_DIR}/wsjtx.qrc)
 
 # AX COM servers
-if (WIN32)
+if (WIN32 AND NOT SKIP_OMNIRIG)
   include (QtAxMacros)
   wrap_ax_server (GENAXSRCS ${AXSERVERSRCS})
-endif (WIN32)
+endif (WIN32 AND NOT SKIP_OMNIRIG)
 
 
 #
@@ -795,9 +796,9 @@ add_library (wsjt_qt STATIC ${wsjt_qt_CXXSRCS} ${wsjt_qt_GENUISRCS} ${GENAXSRCS}
 # set wsjtx_udp exports to static variants
 target_compile_definitions (wsjt_qt PUBLIC UDP_STATIC_DEFINE)
 target_link_libraries (wsjt_qt Hamlib::Hamlib Qt6::Widgets Qt6::Network Qt6::SerialPort)
-if (WIN32)
+if (WIN32 AND NOT SKIP_OMNIRIG)
   target_link_libraries (wsjt_qt Qt6::AxContainer Qt6::AxServer)
-endif (WIN32)
+endif (WIN32 AND NOT SKIP_OMNIRIG)
 
 add_library (wsjt_qtmm STATIC ${wsjt_qtmm_CXXSRCS} ${wsjt_qtmm_GENUISRCS})
 target_link_libraries (wsjt_qtmm Qt6::Multimedia)
