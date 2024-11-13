@@ -3,12 +3,12 @@
 CallsignValidator::CallsignValidator (QObject * parent, bool allow_compound)
   : QValidator {parent}
   , re_ {allow_compound ? 
-      R"(^(([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)/)?([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+(/(P|M|A|\\d|QRP|(([A-Z]{2}|\\d[A-Z]|[A-Z]\\d))))$)"
-      : R"(^([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+$)"}
+      R"(^(([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d?/)?([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+(/(P|M|A|\\d|QRP|(([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d?)))?$)"
+      : R"(^([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+$)"}
   , _pattern {
     allow_compound ? 
-      "(^(([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)/)?([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+(/(P|M|A|\\d|QRP|(([A-Z]{2}|\\d[A-Z]|[A-Z]\\d))))$)"
-      : "(^([A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+$)"
+      "^(([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d?/)?([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+(/(P|M|A|\\d|QRP|(([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d?)))?$"
+      : "^([BFGIKMNRUWDS]|[A-Z]{2}|\\d[A-Z]|[A-Z]\\d)\\d+[A-Z]+$"
   }
 {
 }
