@@ -18,6 +18,7 @@ public:
 
 private:
   QRegularExpression re_;
+  QString _pattern ;
 };
 
 #endif
